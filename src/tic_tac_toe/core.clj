@@ -154,10 +154,14 @@
     (loop []
       (loop [position (init-position)
              player-cycle (prompt-for-player)]
-        (when-not (= (:ply position)
-                     (square (:dim position)))
-          (recur (move position (prompt-for-move position))
-                 (rest player-cycle))))
+        (if (win? position (other-turn position))
+          (println "Winner: " (second player-cycle))
+          (when-not (= (:ply position)
+                       (square (:dim position)))
+            (recur (move position (if (= (first player-cycle) 'computer)
+                                    (best-move position) 
+                                    (prompt-for-move position)))
+                   (rest player-cycle)))))
       (when (prompt-for-replay) (recur)))
     (catch Throwable e
       (when-not (= "quit" (.getMessage e))
