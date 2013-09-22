@@ -1,6 +1,7 @@
 (ns ttt.core
   (:require [ttt.game :refer :all]))
-(defn main []
+
+(defn -main []
   (case (play)
     quit (println "goodbye")
     computer (println "Computer wins!")
